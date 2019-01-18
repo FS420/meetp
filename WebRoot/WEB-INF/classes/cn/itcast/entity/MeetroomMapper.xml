@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.dao.MeetroomMapper" >
+	  <resultMap id="meetroom" type="cn.itcast.entity.Meetroom" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="roomName" property="roomname" jdbcType="VARCHAR" />
+	    <result column="roomPlace" property="roomplace" jdbcType="VARCHAR" />
+	    <result column="holdNumber" property="holdnumber" jdbcType="INTEGER" />
+	    <result column="isAble" property="isable" jdbcType="BIT" />
+	    <result column="memo" property="memo" jdbcType="VARCHAR" />
+	    <result column="orderNumber" property="ordernumber" jdbcType="INTEGER" />
+	  </resultMap>
+	  
+  <!-- 查询所有的会议室 -->
+  <select id="selectAll" resultType="meetroom">
+  		select id,roomName,roomPlace,holdNumber,isAble,memo,orderNumber
+		from meettingroom
+  </select>
+  
+  <!-- 删除 -->
+	<delete id="delById" parameterType="string" >
+	    delete from meettingroom where id=#{id}
+	</delete>
+	
+  
+  <!-- 根据id更新 -->
+	<update id="update" parameterType="meetroom">  <!-- 修改密码 -->
+		update meettingroom  
+        <set>
+        	roomName=#{roomname},roomPlace=#{roomplace},holdNumber=#{holdnumber},
+        	isAble=#{isable},memo=#{memo},orderNumber=#{ordernumber}
+        </set>
+        where id = #{id}
+	</update>
+  
+  <!-- 通过id查找实体 -->
+  <select id="selectById" parameterType="string" resultType="meetroom">
+		select id,roomName,roomPlace,holdNumber,isAble,memo,orderNumber
+		from meettingroom
+		where id=#{id}
+  </select>
+  
+  <!-- 插入数据 -->
+  <insert id="insert" parameterType="meetroom">
+  	   insert into meettingroom(id,roomName,roomPlace,holdNumber,isAble,memo,orderNumber) 
+	   values(#{id},#{roomname},#{roomplace},#{holdnumber},#{isable},#{memo},#{ordernumber})
+  </insert>
+  
+  <!-- 多条件查询总共的条数 -->
+  <select id="selectPageCountUseDyc" parameterType="Page" resultType="Integer">
+	    select count(*) from meettingroom
+	    <where>
+		      <if test="paramEntity.roomname!=null">
+			      and roomname like #{paramEntity.roomname}
+			  </if>
+			  <!-- <if test="paramEntity.goodsUnit!=null">
+			      and goods_unit like #{paramEntity.goodsUnit}
+			  </if> -->
+		</where>
+  	</select>
+  
+  	<!-- 多条件查询数据 -->
+  	<select id="selectPageListUseDyc" parameterType="Page" resultMap="meetroom">
+	      select  id,roomName,roomPlace,holdNumber,isAble,memo,orderNumber
+	      from meettingroom
+	   	 <where>
+		      <if test="paramEntity.roomname!=null">
+			      and roomname like #{paramEntity.roomname}
+			  </if> 
+			  <!-- <if test="paramEntity.goodsUnit!=null">
+			      and goods_unit like #{paramEntity.goodsUnit}
+			  </if> -->
+		  </where> 
+	      limit #{start},#{rows}
+  	</select>
+  
+</mapper>

@@ -1,0 +1,119 @@
+.celan {
+	padding-top: 30px;
+	margin-top: 1px;
+	width: 10%;
+	height: 500px;
+	float: left;
+	display: block;
+	background: #666;
+}
+
+
+/* 个人中心修改   */
+.gerentouxiang {
+	width: 75%;
+	height: 80px;
+	display: block;
+	float: left;
+	background: #FFF;
+	margin-left: 5%;
+	margin-top: 30px;
+	margin-bottom: 1px;
+}
+
+.gerentouxiang_left {
+	width: 15%;
+	height: 80px;
+	display: block;
+	float: left;
+	font-size: 20px;
+	font-family: "微软雅黑";
+	color: #FFF;
+	text-align: center;
+	line-height: 80px;
+	background: #666;
+	text-align: center;
+}
+.gerentouxiang_picture {
+	width: 180px;
+	height: 120px;
+	display: block;
+	float: left;
+	font-family: "微软雅黑";
+	margin-top: 10px;
+}
+.gerentouxiang_picture .gerentouxiang_picture_img{
+	width: 80px;
+	height: 65px;
+	margin-left:30px;
+}
+.gerentouxiang .gerentouxiang_submit{
+	width:100px;
+	margin-left:20px;
+	float:left;
+	margin-top:30px;
+}
+
+.button_shangchuan {
+	width: 5%;
+	height: 30px;
+	font-size: 16px;
+	font-family: "宋体";
+	display: block;
+	float: left;
+	margin-top: 80px;
+	margin-left: 3%;
+	margin-right: 20px;
+}
+
+.usermanage_bottom {
+	width: 75%;
+	height: 72px;
+	display: block;
+	float: left;
+	background: #FFF;
+	margin-left: 5%;
+	margin-bottom: 1px;
+}
+.bottom_left {
+	width: 15%;
+	height: 72px;
+	display: block;
+	float: left;
+	font-size: 20px;
+	font-family: "微软雅黑";
+	color: #FFF;
+	text-align: center;
+	line-height: 50px;
+	background: #666;
+}
+
+.input_update {           /* 修改自己信息和修改密码 */
+	width: 25%;
+	height: 27px;
+	display: block;
+	float: left;
+	margin-left: 20px;
+	margin-top: 10px;
+	border-radius: 5px;
+	border: #999 1px solid;
+	font-size: 16px;
+	font-family: "微软雅黑";
+	padding-left: 20px;
+	color: #666;
+	font-weight: bold;
+}
+.usermanage_hang .usermanage_birthday{   /**修改用户的生日 */
+	float:left;
+	margin-left:20px;
+	margin-top:15px;
+}
+.usermanage_hang .usermanage_gender{
+	float:left;
+	margin-left:20px;
+}
+
+
+
+
+

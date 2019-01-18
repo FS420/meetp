@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.dao.MeetingSourceMapper" >
+    <resultMap id="meetingSource" type="cn.itcast.entity.MeetingSource" >
+	    <id column="meet_id" property="meetId" jdbcType="VARCHAR" />
+	    <id column="source_id" property="sourceId" jdbcType="VARCHAR" />
+	    <result column="number" property="number" jdbcType="INTEGER" />
+    </resultMap>
+ 	
+ 	
+ 	<insert id="insert" parameterType="meetingSource">
+ 		insert into meeting_source(source_id,meet_id,number)
+ 		values(#{sourceId},#{meetId},#{number})
+ 	</insert>
+ 	
+ 	
+</mapper>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.dao.SourceMapper" >
+	<resultMap id="source" type="cn.itcast.entity.Source" >
+	  <id column="id" property="id" jdbcType="VARCHAR" />
+	  <result column="name" property="name" jdbcType="VARCHAR" />
+	  <result column="type" property="type" jdbcType="VARCHAR" />
+	  <result column="free" property="free" jdbcType="INTEGER" />
+	  <result column="availabe" property="availabe" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<!-- 通过资源名和类型找实体 -->
+	<select id="findSourceByNameAndType" parameterType="source" resultType="source">
+	  		select id,name,type,free,availabe
+			from source
+			where name=#{name} and type=#{type}
+	</select>
+	
+	<!-- 通过资源名找所有的资源 -->
+	<select id="selectByName" parameterType="string" resultType="source">
+	  		select id,name,type,free,availabe
+			from source
+			where name=#{sourceName}
+	</select>
+	
+	
+	 <!-- 查询所有的会议室 -->
+	  <select id="selectAll" resultType="source">
+	  		select id,name,type,free,availabe
+			from source
+			where free>0
+	  </select>
+	
+	<!-- 根据id更新 -->
+	<update id="update" parameterType="source">  <!-- 修改密码 -->
+		update source  
+        <set>
+        	name=#{name},type=#{type},free=#{free},availabe=#{availabe}
+        </set>
+        where id = #{id}
+	</update>
+	
+	
+	<!-- 通过id寻找实体 -->
+	<select id="selectById" parameterType="string" resultMap="source">
+		select id,name,type,free,availabe
+		from source
+		where id=#{id}
+	</select>
+	
+	<!-- 删除 -->
+	<delete id="delById" parameterType="string" >
+	    delete from source where id=#{id}
+	</delete>
+	
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="source">
+		    insert into source(id,name,type,free,availabe) 
+		    values(#{id},#{name},#{type},#{free},#{availabe})
+	</insert>
+	
+	<!-- 寻找所有的资源名称 -->
+	<select id="findSourceName" resultType="string">
+		select distinct(name) from source;
+	</select>
+	
+	<!-- 多条件查询总共的条数 -->
+  	<select id="selectPageCountUseDyc" parameterType="Page" resultType="Integer">
+	    select count(*) from source
+	    <where>
+	      <if test="paramEntity.name!=null">
+		      and name like #{paramEntity.name}
+		  </if>
+		  <!-- <if test="paramEntity.goodsUnit!=null">
+		      and goods_unit like #{paramEntity.goodsUnit}
+		  </if> -->
+		</where>
+  	</select>
+  
+  	<!-- 多条件查询数据 -->
+  	<select id="selectPageListUseDyc" parameterType="Page" resultMap="source">
+	      select  id,name,type,free,availabe
+	      from source
+	   	 <where>
+		      <if test="paramEntity.name!=null">
+			      and name like #{paramEntity.name}
+			  </if>
+			  <!-- <if test="paramEntity.goodsUnit!=null">
+			      and goods_unit like #{paramEntity.goodsUnit}
+			  </if> -->
+		  </where> 
+	      limit #{start},#{rows}
+  	</select>
+
+  
+</mapper>

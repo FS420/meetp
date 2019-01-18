@@ -1,0 +1,111 @@
+/*   首页的css   */
+
+/*  不知道哪里有
+.huiyingtongzhi_wode {
+	margin-top: 15px;
+	font-family: "微软雅黑";
+	font-size: 26px;
+	display: block;
+	width: 200px;
+	height: 30px;
+	line-height: 30px;
+	text-align: right;
+	font-weight: bold;
+}*/
+
+.kaitou .huanying .account{
+	color:#CC6600;
+}
+
+/*  	主页的“我的会议通知”    （左边） */
+.huiyitongzhi {     
+	width: 37%;
+	height: 200px;
+	margin-left: 12%;
+	margin-top: 20px;
+	float: left;
+	background: #FFF;
+}
+.huiyitongzhi_huiyitongzhi {    /* 我的会议通知   */
+	margin:0 auto;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	font-family: "微软雅黑";
+	color: #C60;
+	font-weight: bold;
+	font-size: 26px;
+	display: block;
+	width:40%;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	
+}
+.huiyitongzhi_huiyi {         /*	会议名称	 */
+	font-family: "宋体";
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+	display: block;
+	width: 25%;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	float: left;
+	margin-left: 15px;
+}
+.huiyitongzhi_yanjingzhe { 		  /* 预约人  */
+	font-family: "微软雅黑";
+	font-style: normal;
+	font-size: 15px;
+	display: block;
+	width: 14%;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	float: left;
+}
+.huiyitongzhi_huiyishi {      	  /* 会议室地点  */
+	font-family: "微软雅黑";
+	font-style: normal;
+	font-size: 15px;
+	display: block;
+	width: 20%;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	float: left;
+} 	
+.huiyitongzhi_sijian {      	  /* 开会时间 */
+	font-family: "微软雅黑";
+	font-style: normal;
+	font-size: 15px;
+	display: block;
+	width: 37%;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	float: right;
+}
+
+.my_active{
+    text-align: center;
+    background-color: #0F3;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+.other_active{
+    text-align: center;
+    background-color: #C60;
+    color: white;
+    font-size: 14px;
+}
+.table_top{
+	margin-top:10px;
+	margin-bottom:50px;
+}
+
+.note{
+	margin-left:10px;
+}

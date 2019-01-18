@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.dao.UserMeetingWordMapper" >
+
+	<resultMap id="userMeetingWord" type="cn.itcast.entity.UserMeetingWord" >
+	  <id column="meeting_id" property="meetingId" jdbcType="VARCHAR" />
+	  <id column="name" property="name" jdbcType="VARCHAR" />
+	  <id column="user_id" property="userId" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 多条件查询总共的条数 -->
+  	<select id="selectPageCountUseDyc" parameterType="Page" resultType="Integer">
+	    select count(*) from user_meeting_word
+	    <where>
+	      <if test="paramEntity.name!=null">
+		      and name like #{paramEntity.name}
+		  </if>
+		  <if test="paramEntity.meetingId!=null">
+		      and meeting_id = #{paramEntity.meetingId}
+		  </if>
+		</where>
+  	</select>
+  
+  	<!-- 多条件查询数据 -->
+  	<select id="selectPageListUseDyc" parameterType="Page" resultMap="userMeetingWord">
+	      select  meeting_id,user_id,name
+	      from user_meeting_word
+	   	 <where>
+		      <if test="paramEntity.name!=null">
+			      and name like #{paramEntity.name}
+			  </if>
+			  <if test="paramEntity.meetingId!=null">
+			      and meeting_id = #{paramEntity.meetingId}
+			  </if> 
+		  </where> 
+	      limit #{start},#{rows}
+  	</select>
+	
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="userMeetingWord">
+		    insert into user_meeting_word(meeting_id,user_id,name) 
+		    values(#{meetingId},#{userId},#{name})
+	</insert>
+	
+	
+</mapper>

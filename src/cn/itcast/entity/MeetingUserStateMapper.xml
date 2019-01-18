@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.dao.MeetingUserStateMapper" >
+    <resultMap id="meetingUserState" type="cn.itcast.entity.MeetingUserState" >
+	    <id column="meet_id" property="meetId" jdbcType="VARCHAR" />
+	    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+	    <id column="state" property="state" jdbcType="VARCHAR" />
+  	</resultMap>
+ 	
+ 	<!--  通过userId和state查找meetingUserState实体集合 -->
+ 	<select id="selectOwnByUserIdAndState" parameterType="java.util.Map" resultMap="meetingUserState">
+ 		select meet_id,user_id,state 
+ 		from meeting_user_state
+ 		where user_id=#{userId} and state=#{state}
+ 	</select>
+ 	
+ 	<!-- 查找该会议的所有meetingUserState实体  -->
+ 	<select id="selectMeetingUserStateByMeetId" parameterType="string" resultMap="meetingUserState">
+ 		select meet_id,user_id,state 
+ 		from meeting_user_state
+ 		where meet_id=#{meetId} 
+ 	</select>
+ 	
+ 	<!-- 通过meetid和userid去修改state -->
+ 	<update id="updateStateByUserIdAndMeetId" parameterType="meetingUserState" >
+ 		update meeting_user_state
+ 		<set>
+        	state=#{state}
+        </set>
+        where meet_id = #{meetId} and user_id=#{userId}
+ 	</update>
+ 	
+ 	<!-- 通过userId查找meetingUserState实体集合 -->
+ 	<select id="selectOwnByUserId" parameterType="string" resultMap="meetingUserState">
+ 		select meet_id,user_id,state 
+ 		from meeting_user_state
+ 		where user_id=#{userId}
+ 	</select>
+ 	
+ 	<!-- 插入参与者 -->
+ 	<insert id="insert" parameterType="meetingUserState">
+ 		insert into meeting_user_state(meet_id,user_id,state)
+ 		values(#{meetId},#{userId},#{state})
+ 	</insert>
+ 	
+ 	
+ 	
+</mapper>

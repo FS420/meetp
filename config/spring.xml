@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+      xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:context="http://www.springframework.org/schema/context"
+      xmlns:aop="http://www.springframework.org/schema/aop"
+      xmlns:tx="http://www.springframework.org/schema/tx"
+	  xmlns:mvc="http://www.springframework.org/schema/mvc"
+    
+      xsi:schemaLocation="
+    
+      http://www.springframework.org/schema/beans 
+      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+      
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-3.0.xsd
+ 	  
+	  http://www.springframework.org/schema/aop 
+	  http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	  
+	  http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+    
+      http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+      ">
+     
+      <!-- 1.配置数据库连接池，目的:管理数据库连接
+      			zeroDateTimeBehavior=convertToNull : 解决数据库是datetime类型，转换不行的原因
+      -->
+      <bean id="comboPooledDataSourceId" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+           <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+           <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/meetroom?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/>
+           <property name="user" value="root"/>
+           <property name="password" value="123456"/>
+      </bean>
+      
+      
+      <!-- 2.配置SqlSessionFactoryBean ,
+                         目的是加载mybatis.xml文件和里面的映射文件,即代替mybatis工具类加载mybatis.xml文件
+       -->
+      <bean id="sqlSessionFactoryBeanId" class="org.mybatis.spring.SqlSessionFactoryBean">
+      		<property name="dataSource" ref="comboPooledDataSourceId"/>
+      		
+      		<!-- 加载mybatis.xml文件 -->
+      		<property name="configLocation" value="classpath:mybatis.xml"/>
+      		
+      		<!-- 这里已加载所有的XxxMapper.xml文件， 那么在mybatis.xml文件中就不要写类似语句
+      		     	<mappers>
+	  						<mapper resource="cn/it/scm/entity/DeptMapper.xml" />
+					</mappers>
+      		 -->
+      		<property name="mapperLocations" value="classpath:cn/itcast/entity/*.xml"/>
+      </bean>
+      
+      
+       <!-- 
+          3.配置mybatis的事务管理器，即因为mybatis底层用的是jdbc事务管理器，
+                        所以在这亦然配置jdbc事务管理器。
+	               注意：ref=数据库连接id；不是value属性。
+       -->
+       <bean id="dataSourceTransactionManagerId" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+            <property name="dataSource" ref="comboPooledDataSourceId"/>
+       </bean>
+       
+       <!-- 
+           4.配置事务通知，即让哪些【方法】需要事务支持
+       -->
+       <tx:advice id="tx" transaction-manager="dataSourceTransactionManagerId">
+              <tx:attributes>
+                  <!-- 增删改查四种方法 
+                                          默认只处理运行时异常，例如:Integer.parseInt("aa");
+                                          加rollback-for="Exception/Throwable"可处理所有的异常和错误,例如：Class.forName("dd.xss");
+                  -->
+                  <tx:method name="add*" propagation="REQUIRED"    rollback-for="Exception"/>
+                  <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+                  <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+                  <tx:method name="query*" propagation="REQUIRED" rollback-for="Exception"/>
+              </tx:attributes>
+       </tx:advice>
+      
+      <!-- 
+           5.配置事务切面，即让哪些包下的【类】需要事务
+       -->
+      <aop:config>
+          <!--   第一个*表示返回值          第二个*：类           第三个*：方法          ..：参数       -->
+          <aop:advisor advice-ref="tx" pointcut="execution(* cn.itcast.service.*.*(..))" />
+      </aop:config>
+	   
+	  <!--转换适配器：basePackage的类路径下(包括子类)的接口类，
+	      如果在XXXMapper.xml文件中的【命名空间】与【接口类的全类名】一致,
+	      则可以转换成spring的Bean，在用到的地方(service层)通过@Autowird
+	      方式，实现接口的实例化(相当于创建UserDaoImpl类)；
+	      这样的话，就可以不要写持久层的实现类啦！
+	   -->
+	  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	      <property name="sqlSessionFactory" ref="sqlSessionFactoryBeanId" />
+	      <property name="basePackage" value="cn.itcast.dao"></property>
+	  </bean>
+</beans>      
+
+
+
+

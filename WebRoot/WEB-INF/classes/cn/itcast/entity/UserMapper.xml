@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.dao.UserMapper" >
+	 <resultMap id="user" type="User" >  
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="dept" property="dept" jdbcType="VARCHAR" />
+	    <result column="account" property="account" jdbcType="VARCHAR" />
+	    <result column="password" property="password" jdbcType="VARCHAR" />
+	    <result column="headImg" property="headImg" jdbcType="VARCHAR" />
+	    <result column="gender" property="gender" jdbcType="BIT" />
+	    <result column="email" property="email" jdbcType="VARCHAR" />
+	    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+	    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<select id="selectUserByDeptId" parameterType="string" resultMap="user">
+		select id,account,name,dept,password,headImg,gender,email,mobile,birthday
+		from user
+		where dept=#{deptId}
+	</select>
+	
+	<select id="selectById" parameterType="string" resultMap="user">
+		select id,account,name,dept,password,headImg,gender,email,mobile,birthday
+		from user
+		where id=#{id}
+	</select>
+	
+	<!-- 删除用户 -->
+	<delete id="del" parameterType="string">
+	    delete from user where id=#{id}
+	</delete>
+	
+	<!-- servlet的分页 -->
+	<select id="getTotalCount" parameterType="PageBean" resultType="Integer">
+		select count(*)
+		from user 
+	</select>
+	<select id="getAll" parameterType="PageBean" resultMap="user">
+		select id,account,name,dept,gender,email,mobile,birthday
+		from user
+		limit #{index},#{count}
+	</select>
+	
+	<select id="selectAll" resultMap="user">
+		select id,account,name,dept,gender,email,mobile,birthday
+        from user
+	</select>
+	
+	<update id="updatePwd" parameterType="map">  <!-- 修改密码 -->
+		update user  
+        <set>
+        	password=#{pwd}
+        </set>
+        where id = #{id}
+	</update>
+	
+	<insert id="insert" parameterType="user" >
+       insert into user(id) 
+       values(#{id})
+  	</insert>
+ 	
+ 	<!-- 这里的id跟方法名一致 -->
+ 	<select id="login" parameterType="user" resultMap="user">
+        select id,account,name,dept,password,headImg,gender,email,mobile,birthday
+        from user 
+        where account= #{account} and password = #{password}
+ 	</select>
+ 	
+ 	<update id="update" parameterType="User">
+        update user  
+        <set>
+        	account=#{account},name=#{name},dept=#{dept},
+        	password=#{password},headImg=#{headImg},
+        	gender=#{gender},email=#{email},mobile=#{mobile},
+        	birthday=#{birthday}
+        </set>
+        where id = #{id}
+ 	 </update>
+ 	
+ 	
+ 
+</mapper>

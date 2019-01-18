@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+     <typeAliases>
+        <!-- 通过指定package的包名，mybatis会自动扫描此包下的javabean,并
+                         默认设置一个别名，这个别名就是类的名字(非全名，不加包名，例如User)；
+                         这样的话，创建一个实体，不要每次写语句
+            <typeAlias type="cn.it.meet.entity.Xxx" alias="Xxx" />
+         -->
+		<package name="cn.itcast.entity"/> 
+     </typeAliases>
+
+</configuration>

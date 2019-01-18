@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.dao.DeptMapper" >
+  <resultMap id="dept" type="cn.itcast.entity.Dept" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <!-- 查询所有的部门 -->
+  <select id="selectAll" resultType="dept">
+		select id,name
+		from dept
+  </select>
+  
+  <!-- 删除  -->
+  <delete id="delById" parameterType="string" >
+	    delete from dept where id=#{id}
+  </delete>
+	
+  <!-- 更新部门名称 -->
+  <update id="update" parameterType="dept">
+  		update dept  
+        <set>
+        	name=#{name}
+        </set>
+        where id = #{id}
+  </update>
+  
+  <!-- 通过id查找实体 -->
+  <select id="selectById" parameterType="string" resultType="dept">
+		select id,name
+		from dept
+		where id=#{id}
+  </select>
+	
+	<!-- 插入一个部门 -->
+	<insert id="insert" parameterType="dept">
+		insert into dept(id,name) values(#{id},#{name})
+	</insert>
+	
+	<!-- 多条件查询总共的条数 -->
+   <select id="selectPageCountUseDyc" parameterType="Page" resultType="Integer">
+	    select count(*) from dept
+	    <where>
+			<if test="paramEntity.name!=null">
+			      and name like #{paramEntity.name}
+			  </if>
+			<!-- <if test="paramEntity.goodsUnit!=null">
+			      and goods_unit like #{paramEntity.goodsUnit}
+			  </if> -->
+		</where>
+  	</select>
+  
+  	<!-- 多条件查询数据 -->
+  	<select id="selectPageListUseDyc" parameterType="Page" resultMap="dept">
+	      select  id,name
+	      from dept
+	   	 <where>
+		     <if test="paramEntity.name!=null">
+			      and name like #{paramEntity.name}
+			  </if> 
+			  <!--  <if test="paramEntity.goodsUnit!=null">
+			      and goods_unit like #{paramEntity.goodsUnit}
+			  </if> -->
+		  </where> 
+	      limit #{start},#{rows}
+  	</select>
+</mapper>

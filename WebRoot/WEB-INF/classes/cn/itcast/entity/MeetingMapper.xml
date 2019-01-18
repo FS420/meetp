@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.dao.MeetingMapper" >
+  <resultMap id="meeting" type="cn.itcast.entity.Meeting" >
+    <id column="meetId" property="meetid" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="meetRoomName" property="meetroomname" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="applicantDept" property="applicantdept" jdbcType="VARCHAR" />
+    <result column="applicant" property="applicant" jdbcType="VARCHAR" />
+    <result column="recorderDept" property="recorderdept" jdbcType="VARCHAR" />
+    <result column="recorder" property="recorder" jdbcType="VARCHAR" />
+    <result column="orderTime" property="ordertime" jdbcType="TIMESTAMP" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="needTime" property="needtime" jdbcType="VARCHAR" />
+    <result column="endTime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <!-- 查找state0和4的会议  -->
+  <select id="selectMeetingByStateZeroAndFour" parameterType="meeting" resultMap="meeting">
+  		 select meetId,name,meetRoomName,
+  				state,applicantDept,applicant,
+  				recorderDept,recorder,memo,
+  				needTime,endTime,time,orderTime
+	    		from meeting
+	  		where (state = 0 or state = 4) and year(time)=year(#{time}) 
+	  		and month(time)=month(#{time}) and day(time)=day(#{time})
+  </select>
+  
+  <!-- 修改会议的state   parameterType="meeting" 也行的！！！  -->
+  <update id="updateState">
+  	update meeting
+  	<set>
+  		state=#{state}
+  	</set>
+  	where meetId=#{meetid}
+  </update>
+  
+  
+  <!-- 插入数据meeting -->
+  <insert id="insert" parameterType="meeting">
+  	insert into meeting(meetId,name,time,meetRoomName,
+  						state,applicantDept,applicant,
+  						recorderDept,recorder,orderTime,
+  						memo,needTime,endTime)
+  	values(#{meetid},#{name},#{time},#{meetroomname},
+  			#{state},#{applicantdept},#{applicant},
+  			#{recorderdept},#{recorder},#{ordertime},
+  			#{memo},#{needtime},#{endtime})
+  </insert>
+ 	
+  <!-- 多条件查询总共的条数 java.util.HashMap -->
+  <select id="selectPageCountUseDyc" parameterType="Page" resultType="Integer">
+	    select count(*) from meeting 
+	    where meetId in
+	    
+	   	<foreach collection="ownMeetIdList" open="(" close=")" separator="," item="item">
+			#{item}	      
+	    </foreach>
+	    <if test="meetingState==0">    <!-- 用于查询【正常举行】或者已经参加过的 -->
+		    and ( state = #{meetingState} or state =7 )
+		</if>
+		<if test="nowTime!=null">  	   <!-- 【已经参加会议】现在时间大于time  不能用mysql自带的当前时间current_date -->
+		   and TIMESTAMPDIFF(SECOND,NOW(),time)
+		</if>
+		<if test="paramEntity.name!=null">
+		    and name like #{paramEntity.name}
+		</if>
+  	</select>
+  
+  	<!-- 多条件查询数据 ,,-->
+  	<select id="selectPageListUseDyc" parameterType="Page" resultMap="meeting">
+	      select meetId,name,meetRoomName,
+  				state,applicantDept,applicant,
+  				recorderDept,recorder,memo,
+  				needTime,endTime,time,orderTime
+	    		from meeting
+	  		where meetId in
+    		<foreach collection="ownMeetIdList" open="(" close=")" separator="," item="item">
+				#{item}	      
+			</foreach>
+	        <if test="meetingState == 0" >  <!-- 用于查询【正常举行】或者已经参加过的 -->
+	       	 	and ( state = #{meetingState} or state =7 )
+	    	</if>
+	   		<if test="nowTime!=null">  	 <!-- 【已经参加会议】现在时间大于time  不能用mysql自带的当前时间current_date -->
+		  		 and TIMESTAMPDIFF(SECOND,NOW(),time)
+			</if>
+			<if test="paramEntity.name!=null">
+		    	and name like #{paramEntity.name}
+			</if>
+	    	limit #{start},#{rows}
+  	</select>
+ 
+</mapper>
